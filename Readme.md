@@ -1,4 +1,7 @@
 # Build the image
+## android-arm64
+> docker build --rm -t choiip/xcompile-android-arm64 android-arm64
+
 ## android-sdk
 > docker build --rm -t choiip/xcompile-android-sdk android-sdk
 
@@ -14,9 +17,12 @@
 > docker run -it -v $(pwd)/sdk:/opt/android-sdk choiip/xcompile-android-sdk /bin/bash
 
 
-## NDK (through dockcross)
-### build the script
+## NDK 
+### build the script (through dockcross)
 > docker run --rm dockcross/android-arm64 > ./bin/xcompile-android-arm64 && chmod +x ./bin/xcompile-android-arm64
+
+### build the script (through xcompile)
+> docker run --rm choiip/xcompile-android-arm64 > ./bin/xcompile-android-arm64 && chmod +x ./bin/xcompile-android-arm64
 
 ### set PATH environment variable
 > PATH=$PWD/bin:$PATH
@@ -27,3 +33,5 @@
 ### run the script with ndk mounted
 > xcompile-android-arm64 -a "-v $(pwd)/android-ndk-r16b:/opt/android-ndk:ro" /bin/bash
 
+### run the script with both sdk and ndk mounted
+> xcompile-android-arm64 -a "-v $(pwd)/sdk:/opt/android-sdk -v $(pwd)/android-ndk-r16b:/opt/android-ndk:ro" -i choiip/xcompile-android-arm64 /bin/bash
